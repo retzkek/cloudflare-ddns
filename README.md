@@ -5,6 +5,7 @@ Dynamic DNS client using CloudFlare's client
 [API](http://www.cloudflare.com/docs/client-api.html). 
 
 Copyright 2013 Kevin Retzke <kmr@kmr.me>
+
 Shared under the MIT license, see `LICENSE` for details.
 
 Installing
@@ -33,7 +34,9 @@ fairly often.
 After setting your options, change to the package directory 
 (`$GOPATH/pkg/src/github.com/retzkek/cloudflare-ddns`) and run:
 
-    go build
+    go install
+    
+This will build the exetuable and install it in `$GOPATH/bin`.
 
 Usage
 -----
