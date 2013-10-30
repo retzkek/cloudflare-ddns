@@ -15,7 +15,7 @@ to build/run this program. Only packages in the standard library are used.
 
 After that is set up:
 
-    go get github.com/retkek/cloudflare-ddns
+    go get github.com/retzkek/cloudflare-ddns
 
 Set `EMAIL`, `ZONE`, and `DOMAIN` appropriately (for most cases `DOMAIN` == `ZONE`, 
 unless you have a dynamic subdomain.
