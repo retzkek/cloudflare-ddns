@@ -36,7 +36,7 @@ After setting your options, change to the package directory
 
     go install
     
-This will build the exetuable and install it in `$GOPATH/bin`.
+This will build the executable and install it in `$GOPATH/bin`.
 
 Usage
 -----
