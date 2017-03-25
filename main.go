@@ -8,10 +8,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"net"
 	"net/http"
 	"net/url"
-	"strings"
 	"time"
 )
 
@@ -82,31 +80,25 @@ func getRec() (*ApiRecObj, error) {
 	return nil, fmt.Errorf("Unable to locate rec ID")
 }
 
-// Get the current IP address. Right now we use the address of a local
-// network interface, which requires that interface to be publicly
-// exposed (either directly connected or on DMZ).
+// Get the current IP address from onhub api.
 func getAddr(ifname string) string {
-	iface, err := net.InterfaceByName(ifname)
+	r, err := http.Get("http://onhub.here/api/v1/status")
 	if err != nil {
-		log.Printf("error obtaining interface %v\n", ifname)
-		panic(err)
+		log.Printf("error contacting onhub: %s\n", err)
+		return ""
 	}
-	addrs, err := iface.Addrs()
+	var stat OnhubStatus
+	dec := json.NewDecoder(r.Body)
+	err = dec.Decode(&stat)
 	if err != nil {
-		log.Printf("error obtaining address for interface %v\n", ifname)
-		panic(err)
+		log.Printf("error unmarshalling onhub response: %s\n", err)
+		return ""
 	}
-	for _, a := range addrs {
-		// skip IPv6 addresses
-		if !strings.Contains(a.String(), ":") {
-			ip, _, err := net.ParseCIDR(a.String())
-			if err != nil {
-				panic(err)
-			}
-			return ip.String()
-		}
+	if !stat.Wan.Online {
+		log.Printf("error: onhub not online")
+		return ""
 	}
-	return ""
+	return stat.Wan.LocalIpAddress
 }
 
 // Get current address on record, update if different.
