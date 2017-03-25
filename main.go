@@ -120,8 +120,8 @@ func updateAddr(newaddr string) error {
 	args.Set("id", rec.Rec_id)
 	args.Set("name", rec.Name)
 	args.Set("content", newaddr)
-	args.Set("ttl", "1")          // 1=Automatic, otherwise set between 120 and 4,294,967,295 seconds
-	args.Set("service_mode", "1") // 1 = orange cloud, 0 = grey cloud
+	args.Set("ttl", fmt.Sprintf("%.0f", FREQUENCY.Seconds())) // 1=Automatic, otherwise set between 120 and 4,294,967,295 seconds
+	args.Set("service_mode", "0")                             // 1 = orange cloud, 0 = grey cloud
 	resp, err := http.PostForm(APIURL, args)
 	if err != nil {
 		return fmt.Errorf("Error posting request: %v", err)
