@@ -96,7 +96,8 @@ func main() {
 	}
 	ch := time.Tick(FREQUENCY)
 	for _ = range ch {
-		if a := getAddr(); a != lastip {
+		a := getAddr()
+		if a != lastip {
 			if a == "" {
 				// errors within loop are not fatal, we'll just try again next go round
 				log.Printf("Unable to determine IP address.\n")
@@ -108,6 +109,8 @@ func main() {
 					lastip = a
 				}
 			}
+		} else {
+			log.Print("address unchanged")
 		}
 	}
 }
